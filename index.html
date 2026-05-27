@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Templify — Catálogo de Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #08080f;
+  color: #e0e0e0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BG GLOW */
+body::before {
+  content: '';
+  position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(91,79,255,0.12) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+/* HEADER */
+header {
+  position: sticky; top: 0; z-index: 100;
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,8,15,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: #f0f0f0; letter-spacing: -0.5px;
+}
+.logo span { color: #5B4FFF; }
+.header-badge {
+  font-size: 12px; font-weight: 500;
+  background: rgba(0,212,170,0.1);
+  border: 1px solid rgba(0,212,170,0.25);
+  color: #00D4AA; padding: 5px 12px;
+  border-radius: 20px; letter-spacing: 0.5px;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 60px 24px 40px;
+  position: relative; z-index: 1;
+}
+.hero-tag {
+  display: inline-block;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: #5B4FFF; margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 6vw, 54px);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -1.5px; color: #f5f5f5;
+  margin-bottom: 14px;
+}
+.hero h1 em { font-style: normal; color: #5B4FFF; }
+.hero p {
+  font-size: 16px; color: #666;
+  max-width: 400px; margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+/* FILTROS */
+.filters {
+  display: flex; gap: 8px;
+  justify-content: center; flex-wrap: wrap;
+  padding: 0 24px 32px;
+  position: relative; z-index: 1;
+}
+.filter-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 8px 16px; border-radius: 20px;
+  border: 1px solid #1e1e2e;
+  background: transparent; color: #666;
+  cursor: pointer; transition: all 0.18s;
+}
+.filter-btn:hover { border-color: #5B4FFF; color: #a89fff; }
+.filter-btn.active {
+  background: rgba(91,79,255,0.15);
+  border-color: #5B4FFF; color: #a89fff;
+}
+
+/* GRID */
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 0 20px 80px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+/* CARD */
+.card {
+  background: #111118;
+  border: 1px solid #1a1a28;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.22s;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.card:hover {
+  border-color: #5B4FFF;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(91,79,255,0.15);
+}
+
+/* PREVIEW DO TEMPLATE */
+.card-preview {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Estilos únicos para cada preview */
+.prev-dark {
+  background: #0a0a0f;
+}
+.prev-light {
+  background: #F8F6F2;
+}
+.prev-gold {
+  background: #0D0D0D;
+}
+.prev-food {
+  background: #FDFCFA;
+}
+.prev-purple {
+  background: #F8F4FF;
+}
+
+/* Badge sobre preview */
+.card-badge {
+  position: absolute; top: 12px; left: 12px;
+  font-size: 10px; font-weight: 600;
+  padding: 3px 10px; border-radius: 6px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  z-index: 2;
+}
+.badge-hot { background: rgba(239,68,68,0.9); color: #fff; }
+.badge-new { background: rgba(0,212,170,0.9); color: #000; }
+.badge-sale { background: rgba(245,158,11,0.9); color: #000; }
+
+/* INFO DO CARD */
+.card-body { padding: 16px 18px 20px; }
+.card-cat {
+  font-size: 11px; font-weight: 600;
+  color: #5B4FFF; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.card-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: #f0f0f0; margin-bottom: 6px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 13px; color: #555;
+  line-height: 1.5; margin-bottom: 14px;
+}
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 700; color: #f0f0f0;
+}
+.card-price .old {
+  font-size: 13px; color: #333;
+  text-decoration: line-through;
+  font-family: 'DM Sans', sans-serif;
+  display: block; line-height: 1;
+  margin-bottom: 2px;
+}
+.card-price .cur { color: #666; font-size: 14px; font-family: 'DM Sans', sans-serif; }
+.buy-btn {
+  background: #5B4FFF; color: #fff;
+  border: none; border-radius: 10px;
+  padding: 9px 16px; font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; cursor: pointer;
+  transition: background 0.18s;
+  text-decoration: none; display: inline-block;
+}
+.buy-btn:hover { background: #4a3ee0; }
+.card-meta {
+  display: flex; gap: 10px;
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid #1a1a28;
+}
+.meta { font-size: 11px; color: #333; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid #111;
+  position: relative; z-index: 1;
+}
+footer p { font-size: 13px; color: #2a2a3a; }
+footer span { color: #5B4FFF; }
+
+/* WHATS CTA FIXO */
+.whats-fab {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  text-decoration: none; font-size: 26px;
+  transition: transform 0.2s;
+}
+.whats-fab:hover { transform: scale(1.1); }
+
+@media (max-width: 480px) {
+  .catalog { grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 60px; }
+  .card-body { padding: 12px 14px 14px; }
+  .card-name { font-size: 14px; }
+  .card-price { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Templ<span>ify</span></div>
+  <div class="header-badge">✦ Entrega imediata</div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">Catálogo completo</div>
+  <h1>Templates que fazem seu<br/><em>negócio crescer</em></h1>
+  <p>Editável no Canva · Sem experiência em design · A partir de R$19</p>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filter('todos',this)">Todos</button>
+  <button class="filter-btn" onclick="filter('instagram',this)">Instagram</button>
+  <button class="filter-btn" onclick="filter('convites',this)">Convites</button>
+  <button class="filter-btn" onclick="filter('cardapios',this)">Cardápios</button>
+  <button class="filter-btn" onclick="filter('packs',this)">Packs</button>
+</div>
+
+<div class="catalog" id="catalog">
+
+  <!-- CARD 1 — Feed Minimalista -->
+  <a class="card" href="https://wa.me/5514998435744?text=Ola!%20Quero%20o%20template%20Feed%20Minimalista" target="_blank" data-cat="instagram">
+    <div class="card-preview prev-light">
+      <div class="card-badge badge-hot">🔥 Mais vendido</div>
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <rect width="160" height="160" fill="#F8F6F2"/>
+        <rect x="10" y="10" width="140" height="6" fill="#1a1a1a"/>
+        <rect x="10" y="10" width="6" height="140" fill="#1a1a1a"/>
+        <rect x="26" y="26" width="124" height="80" rx="3" fill="#EDEDE9"/>
+        <rect x="26" y="116" width="40" height="2" fill="#1a1a1a"/>
+        <rect x="26" y="126" width="80" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="26" y="140" width="60" height="8" rx="2" fill="#1a1a1a"/>
+        <rect x="26" y="114" width="50" height="2" rx="1" fill="#1a1a1a"/>
+        <text x="88" y="72" text-anchor="middle" font-family="Arial" font-size="11" fill="#ccc">foto</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="card-cat">Instagram</div>
+      <div class="card-name">Feed Minimalista</div>
+      <div class="card-desc">Post elegante para feed. Resultado profissional sem saber design.</div>
+      <div class="card-footer">
+        <div class="card-price"><span class="cur">R$ </span>19</div>
+        <span class="buy-btn">Comprar</span>
+      </div>
+      <div class="card-meta">
+        <span class="meta">✦ Canva</span>
+        <span class="meta">⚡ Imediata</span>
+        <span class="meta">⭐ 4.9</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- CARD 2 — Story de Produto -->
+  <a class="card" href="https://wa.me/5514998435744?text=Ola!%20Quero%20o%20template%20Story%20de%20Produto" target="_blank" data-cat="instagram">
+    <div class="card-preview prev-dark">
+      <div class="card-badge badge-new">✨ Novo</div>
+      <svg width="90" height="160" viewBox="0 0 90 160">
+        <rect width="90" height="160" rx="10" fill="#1a1a2e" stroke="#2a2a4a" stroke-width="1"/>
+        <rect x="0" y="0" width="90" height="3" rx="1.5" fill="#5B4FFF"/>
+        <rect x="8" y="12" width="74" height="74" rx="8" fill="#0f0f2a" stroke="#2a2a4a" stroke-width="0.8"/>
+        <text x="45" y="55" text-anchor="middle" font-family="Arial" font-size="22" fill="#2a2a4a">🛍️</text>
+        <rect x="8" y="94" width="50" height="8" rx="3" fill="#2a2a3a"/>
+        <rect x="8" y="107" width="36" height="8" rx="3" fill="#1e1e3a"/>
+        <rect x="8" y="120" width="32" height="8" rx="3" fill="#333"/>
+        <text x="45" y="136" text-anchor="middle" font-family="Arial Black" font-size="18" fill="#f0f0f0">R$00</text>
+        <rect x="8" y="144" width="74" height="12" rx="6" fill="#5B4FFF"/>
+        <rect x="0" y="157" width="90" height="3" rx="1.5" fill="#00D4AA"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="card-cat">Instagram</div>
+      <div class="card-name">Story de Produto</div>
+      <div class="card-desc">Divulgue seu produto com estilo. CTA e preço em destaque.</div>
+      <div class="card-footer">
+        <div class="card-price"><span class="cur">R$ </span>19</div>
+        <span class="buy-btn">Comprar</span>
+      </div>
+      <div class="card-meta">
+        <span class="meta">✦ Canva</span>
+        <span class="meta">⚡ Imediata</span>
+        <span class="meta">⭐ 4.8</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- CARD 3 — Convite Elegante -->
+  <a class="card" href="https://wa.me/5514998435744?text=Ola!%20Quero%20o%20template%20Convite%20Elegante" target="_blank" data-cat="convites">
+    <div class="card-preview prev-gold">
+      <div class="card-badge badge-new">✨ Novo</div>
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <rect width="160" height="160" fill="#0D0D0D"/>
+        <rect x="10" y="10" width="140" height="140" rx="3" fill="none" stroke="#C9A84C" stroke-width="1"/>
+        <rect x="16" y="16" width="128" height="128" rx="2" fill="none" stroke="#C9A84C" stroke-width="0.4" opacity="0.4"/>
+        <line x1="10" y1="10" x2="40" y2="10" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="10" y1="10" x2="10" y2="40" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="120" y1="10" x2="150" y2="10" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="150" y1="10" x2="150" y2="40" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="10" y1="120" x2="10" y2="150" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="10" y1="150" x2="40" y2="150" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="150" y1="120" x2="150" y2="150" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="120" y1="150" x2="150" y2="150" stroke="#C9A84C" stroke-width="1.5"/>
+        <text x="80" y="48" text-anchor="middle" font-family="Arial" font-size="7" fill="#C9A84C" letter-spacing="2">VOCÊ ESTÁ CONVIDADO</text>
+        <text x="80" y="82" text-anchor="middle" font-family="Georgia" font-size="22" font-style="italic" fill="#F0D080">Maria</text>
+        <text x="80" y="104" text-anchor="middle" font-family="Georgia" font-size="22" font-style="italic" fill="#F0D080">Silva</text>
+        <text x="80" y="122" text-anchor="middle" font-family="Arial" font-size="7" fill="#888" letter-spacing="1">ANIVERSÁRIO · 30 ANOS</text>
+        <text x="80" y="138" text-anchor="middle" font-family="Georgia" font-size="9" fill="#666">15 de Junho · 20h</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="card-cat">Convites</div>
+      <div class="card-name">Convite Elegante Dourado</div>
+      <div class="card-desc">Design sofisticado para festas, casamentos e eventos especiais.</div>
+      <div class="card-footer">
+        <div class="card-price"><span class="cur">R$ </span>25</div>
+        <span class="buy-btn">Comprar</span>
+      </div>
+      <div class="card-meta">
+        <span class="meta">✦ Canva</span>
+        <span class="meta">⚡ Imediata</span>
+        <span class="meta">⭐ 5.0</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- CARD 4 — Cardápio Restaurante -->
+  <a class="card" href="https://wa.me/5514998435744?text=Ola!%20Quero%20o%20template%20Cardapio%20Restaurante" target="_blank" data-cat="cardapios">
+    <div class="card-preview prev-food">
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <rect width="160" height="160" fill="#FDFCFA"/>
+        <rect x="0" y="0" width="160" height="40" fill="#1A0A00"/>
+        <rect x="0" y="0" width="160" height="3" fill="#D4A843"/>
+        <text x="80" y="14" text-anchor="middle" font-family="Arial" font-size="7" fill="#D4A843" letter-spacing="2">RESTAURANTE</text>
+        <text x="80" y="32" text-anchor="middle" font-family="Georgia" font-size="14" font-style="italic" fill="#FDFCFA">Nome Aqui</text>
+        <text x="16" y="58" font-family="Arial" font-size="7" font-weight="bold" fill="#2D1500" letter-spacing="1">ENTRADAS</text>
+        <rect x="16" y="61" width="50" height="1" fill="#D4A843"/>
+        <text x="16" y="76" font-family="Georgia" font-size="8" font-weight="bold" fill="#1a1a1a">Nome do Prato</text>
+        <text x="144" y="76" text-anchor="end" font-family="Georgia" font-size="8" fill="#D4A843">R$00</text>
+        <rect x="16" y="79" width="128" height="8" rx="2" fill="#f5f5f5"/>
+        <text x="16" y="97" font-family="Georgia" font-size="8" font-weight="bold" fill="#1a1a1a">Nome do Prato</text>
+        <text x="144" y="97" text-anchor="end" font-family="Georgia" font-size="8" fill="#D4A843">R$00</text>
+        <rect x="16" y="100" width="128" height="8" rx="2" fill="#f5f5f5"/>
+        <rect x="16" y="112" width="128" height="0.5" fill="#e8e8e8"/>
+        <text x="16" y="124" font-family="Arial" font-size="7" font-weight="bold" fill="#2D1500" letter-spacing="1">PRATOS PRINCIPAIS</text>
+        <rect x="16" y="127" width="70" height="1" fill="#D4A843"/>
+        <text x="16" y="142" font-family="Georgia" font-size="8" font-weight="bold" fill="#1a1a1a">Nome do Prato</text>
+        <text x="144" y="142" text-anchor="end" font-family="Georgia" font-size="8" fill="#D4A843">R$00</text>
+        <rect x="0" y="152" width="160" height="8" fill="#1A0A00"/>
+        <rect x="0" y="157" width="160" height="3" fill="#D4A843"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="card-cat">Cardápios</div>
+      <div class="card-name">Cardápio Restaurante</div>
+      <div class="card-desc">Elegante e completo. Atualize quando quiser no Canva.</div>
+      <div class="card-footer">
+        <div class="card-price"><span class="cur">R$ </span>39</div>
+        <span class="buy-btn">Comprar</span>
+      </div>
+      <div class="card-meta">
+        <span class="meta">✦ Canva</span>
+        <span class="meta">⚡ Imediata</span>
+        <span class="meta">⭐ 4.8</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- CARD 5 — Carrossel Dicas -->
+  <a class="card" href="https://wa.me/5514998435744?text=Ola!%20Quero%20o%20template%20Carrossel%20de%20Dicas" target="_blank" data-cat="instagram">
+    <div class="card-preview prev-purple">
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <rect width="160" height="160" fill="#F8F4FF"/>
+        <rect x="0" y="0" width="70" height="160" fill="#6D4AFF"/>
+        <circle cx="30" cy="130" r="80" fill="white" opacity="0.04"/>
+        <text x="35" y="68" text-anchor="middle" font-family="Arial Black" font-size="9" fill="rgba(255,255,255,0.6)" letter-spacing="1">DICAS</text>
+        <text x="35" y="105" text-anchor="middle" font-family="Arial Black" font-size="42" fill="white" opacity="0.15">5</text>
+        <text x="10" y="88" font-family="Arial Black" font-size="16" fill="white">5</text>
+        <text x="10" y="106" font-family="Arial Black" font-size="11" fill="white">dicas</text>
+        <text x="10" y="122" font-family="Arial Black" font-size="11" fill="rgba(255,255,255,0.7)">para seu</text>
+        <text x="10" y="138" font-family="Arial Black" font-size="11" fill="rgba(255,255,255,0.7)">negócio</text>
+        <rect x="78" y="20" width="74" height="24" rx="6" fill="white" stroke="#e8e4ff" stroke-width="0.8"/>
+        <rect x="78" y="20" width="3" height="24" rx="1.5" fill="#6D4AFF"/>
+        <rect x="84" y="27" width="30" height="5" rx="2" fill="#e8e4ff"/>
+        <rect x="84" y="36" width="50" height="4" rx="2" fill="#f0eeff"/>
+        <rect x="78" y="52" width="74" height="24" rx="6" fill="white" stroke="#e8e4ff" stroke-width="0.8"/>
+        <rect x="78" y="52" width="3" height="24" rx="1.5" fill="#6D4AFF"/>
+        <rect x="84" y="59" width="30" height="5" rx="2" fill="#e8e4ff"/>
+        <rect x="84" y="68" width="50" height="4" rx="2" fill="#f0eeff"/>
+        <rect x="78" y="84" width="74" height="24" rx="6" fill="white" stroke="#e8e4ff" stroke-width="0.8"/>
+        <rect x="78" y="84" width="3" height="24" rx="1.5" fill="#6D4AFF"/>
+        <rect x="84" y="91" width="30" height="5" rx="2" fill="#e8e4ff"/>
+        <rect x="84" y="100" width="50" height="4" rx="2" fill="#f0eeff"/>
+        <rect x="78" y="116" width="74" height="24" rx="6" fill="#6D4AFF"/>
+        <rect x="84" y="124" width="50" height="5" rx="2" fill="rgba(255,255,255,0.4)"/>
+        <rect x="84" y="132" width="36" height="4" rx="2" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="card-cat">Instagram</div>
+      <div class="card-name">Carrossel Capa de Dicas</div>
+      <div class="card-desc">Capa profissional para carrossel que engaja e gera seguidores.</div>
+      <div class="card-footer">
+        <div class="card-price"><span class="cur">R$ </span>19</div>
+        <span class="buy-btn">Comprar</span>
+      </div>
+      <div class="card-meta">
+        <span class="meta">✦ Canva</span>
+        <span class="meta">⚡ Imediata</span>
+        <span class="meta">⭐ 4.9</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- CARD 6 — Mega Pack -->
+  <a class="card" href="https://wa.me/5514998435744?text=Ola!%20Quero%20o%20Mega%20Pack%20Completo" target="_blank" data-cat="packs" style="border-color:#5B4FFF; background: linear-gradient(160deg, #111118, #1a1535);">
+    <div class="card-preview prev-dark" style="background: linear-gradient(135deg, #0f0d2a, #121035);">
+      <div class="card-badge badge-sale">⭐ Mais popular</div>
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <rect width="160" height="160" fill="none"/>
+        <!-- grid de cards simulados -->
+        <rect x="16" y="20" width="58" height="52" rx="6" fill="#5B4FFF" opacity="0.3" stroke="#5B4FFF" stroke-width="0.8"/>
+        <rect x="86" y="20" width="58" height="52" rx="6" fill="#00D4AA" opacity="0.2" stroke="#00D4AA" stroke-width="0.8"/>
+        <rect x="16" y="82" width="58" height="52" rx="6" fill="#1e1a3a" stroke="#5B4FFF" stroke-width="0.8"/>
+        <rect x="86" y="82" width="58" height="52" rx="6" fill="#0f2020" stroke="#00D4AA" stroke-width="0.8"/>
+        <!-- T no card 1 -->
+        <rect x="26" y="32" width="38" height="7" rx="2" fill="#5B4FFF"/>
+        <rect x="41" y="39" width="8" height="18" rx="2" fill="#5B4FFF"/>
+        <!-- ícone convite no card 2 -->
+        <rect x="96" y="30" width="38" height="32" rx="3" fill="none" stroke="#C9A84C" stroke-width="1"/>
+        <text x="115" y="50" text-anchor="middle" font-family="Georgia" font-size="12" font-style="italic" fill="#C9A84C">M</text>
+        <!-- cardápio no card 3 -->
+        <rect x="16" y="82" width="58" height="8" rx="2" fill="#1A0A00"/>
+        <rect x="22" y="100" width="40" height="3" rx="1" fill="#2a2a2a"/>
+        <rect x="22" y="108" width="30" height="3" rx="1" fill="#2a2a2a"/>
+        <rect x="22" y="116" width="40" height="3" rx="1" fill="#2a2a2a"/>
+        <!-- carrossel no card 4 -->
+        <rect x="86" y="82" width="22" height="52" rx="3" fill="#6D4AFF" opacity="0.6"/>
+        <rect x="112" y="90" width="28" height="10" rx="3" fill="#2a2a3a"/>
+        <rect x="112" y="104" width="28" height="10" rx="3" fill="#2a2a3a"/>
+        <rect x="112" y="118" width="28" height="10" rx="3" fill="#6D4AFF" opacity="0.5"/>
+        <!-- + badge -->
+        <circle cx="130" cy="30" r="14" fill="#5B4FFF"/>
+        <text x="130" y="35" text-anchor="middle" font-family="Arial Black" font-size="14" fill="white">+</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="card-cat" style="color:#00D4AA;">Pack Completo</div>
+      <div class="card-name">Mega Pack — 5 Templates</div>
+      <div class="card-desc">Tudo em um só lugar. Feed, story, convite, cardápio e carrossel.</div>
+      <div class="card-footer">
+        <div class="card-price">
+          <span class="old">R$ 121</span>
+          <span class="cur">R$ </span>89
+        </div>
+        <span class="buy-btn">Comprar</span>
+      </div>
+      <div class="card-meta">
+        <span class="meta">✦ 5 templates</span>
+        <span class="meta">⚡ Imediata</span>
+        <span class="meta">✦ Economia R$32</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<footer>
+  <p>© 2025 <span>Templify</span> · Todos os direitos reservados · @templify.oficial</p>
+</footer>
+
+<a class="whats-fab" href="https://wa.me/5514998435744" target="_blank" title="Fale pelo WhatsApp">💬</a>
+
+<script>
+function filter(cat, el) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    const match = cat === 'todos' || card.dataset.cat === cat;
+    card.style.display = match ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
