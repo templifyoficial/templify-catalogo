@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -99,10 +98,83 @@ footer span { color: #5B4FFF; }
 .whats-fab { position: fixed; bottom: 24px; right: 24px; z-index: 200; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); text-decoration: none; font-size: 26px; transition: transform 0.2s; }
 .whats-fab:hover { transform: scale(1.1); }
 
+/* SOBRE */
+.sobre {
+  max-width: 1100px; margin: 0 auto 60px;
+  padding: 60px 24px;
+  border-top: 1px solid #111;
+  position: relative; z-index: 1;
+  text-align: center;
+}
+.sobre-logo { margin-bottom: 32px; display: flex; justify-content: center; }
+.sobre-titulo {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px; font-weight: 800;
+  color: #f0f0f0; letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.sobre-desc {
+  font-size: 16px; color: #666; line-height: 1.8;
+  max-width: 640px; margin: 0 auto 48px;
+}
+.sobre-desc strong { color: #a89fff; }
+.sobre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px; margin-bottom: 48px;
+}
+.sobre-card {
+  background: #111118;
+  border: 1px solid #1a1a28;
+  border-radius: 18px; padding: 28px 22px;
+  text-align: left; transition: border-color 0.2s;
+}
+.sobre-card:hover { border-color: #5B4FFF; }
+.sobre-icon { font-size: 32px; margin-bottom: 14px; display: block; }
+.sobre-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: #f0f0f0; margin-bottom: 10px;
+}
+.sobre-card p { font-size: 14px; color: #555; line-height: 1.7; }
+.sobre-divider { height: 1px; background: #111; margin-bottom: 40px; }
+.sobre-stats {
+  display: flex; align-items: center;
+  justify-content: center; flex-wrap: wrap;
+  gap: 0; margin-bottom: 40px;
+  background: #111118; border: 1px solid #1a1a28;
+  border-radius: 18px; overflow: hidden;
+}
+.stat-item {
+  flex: 1; min-width: 140px;
+  padding: 24px 16px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+}
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px; font-weight: 800; color: #5B4FFF;
+}
+.stat-label { font-size: 12px; color: #444; }
+.stat-sep { width: 1px; height: 60px; background: #1a1a28; }
+.sobre-cta {
+  display: inline-block;
+  background: #5B4FFF; color: #fff;
+  border-radius: 14px; padding: 16px 32px;
+  font-size: 16px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none; margin-bottom: 16px;
+  transition: background 0.2s;
+}
+.sobre-cta:hover { background: #4a3ee0; }
+.sobre-handle { font-size: 14px; color: #333; }
+
 @media (max-width: 480px) {
   .catalog { grid-template-columns: 1fr; gap: 14px; padding: 0 12px 60px; }
   .card-body { padding: 12px 14px 14px; }
   .card-name { font-size: 15px; }
+  .stat-sep { display: none; }
+  .sobre-stats { gap: 1px; }
 }
 </style>
 </head>
@@ -471,6 +543,85 @@ footer span { color: #5B4FFF; }
   </div>
 
 </div>
+
+<!-- SEÇÃO SOBRE A EMPRESA -->
+<section class="sobre">
+
+  <!-- Logo -->
+  <div class="sobre-logo">
+    <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(46, 8)">
+        <rect x="0" y="0" width="86" height="17" rx="4" fill="#5B4FFF"/>
+        <rect x="34" y="17" width="17" height="56" rx="4" fill="#5B4FFF"/>
+        <rect x="51" y="56" width="17" height="17" rx="4" fill="#00D4AA"/>
+        <rect x="0" y="56" width="17" height="17" rx="4" fill="#5B4FFF" opacity="0.2"/>
+      </g>
+      <text x="110" y="108" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="38" fill="#f0f0f0" letter-spacing="-1">Templify</text>
+      <rect x="42" y="118" width="90" height="4" rx="2" fill="#5B4FFF"/>
+      <rect x="136" y="118" width="32" height="4" rx="2" fill="#00D4AA"/>
+      <text x="110" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#444" letter-spacing="3">TEMPLATES DIGITAIS</text>
+    </svg>
+  </div>
+
+  <!-- Título -->
+  <h2 class="sobre-titulo">Quem somos</h2>
+  <p class="sobre-desc">A <strong>Templify</strong> é uma empresa especializada em templates digitais prontos para uso. Nascemos com o objetivo de ajudar empreendedores, pequenos negócios e criadores de conteúdo a terem uma presença digital profissional — sem precisar saber design e sem gastar muito.</p>
+
+  <!-- O que são templates -->
+  <div class="sobre-grid">
+    <div class="sobre-card">
+      <div class="sobre-icon">🎨</div>
+      <h3>O que são templates?</h3>
+      <p>Templates são modelos prontos e editáveis que você personaliza do seu jeito. Troque textos, cores e fotos no Canva em poucos minutos — sem precisar criar do zero.</p>
+    </div>
+    <div class="sobre-card">
+      <div class="sobre-icon">💼</div>
+      <h3>Para quem servem?</h3>
+      <p>Para qualquer pessoa que quer um visual profissional: empreendedores, donos de restaurantes, criadores de conteúdo, assessores de eventos e muito mais.</p>
+    </div>
+    <div class="sobre-card">
+      <div class="sobre-icon">⚡</div>
+      <h3>Como funciona?</h3>
+      <p>Escolha o template, finalize a compra e receba o acesso na hora. Abra no Canva gratuitamente, edite como quiser e use onde precisar. Simples assim.</p>
+    </div>
+    <div class="sobre-card">
+      <div class="sobre-icon">🛡️</div>
+      <h3>Compra segura</h3>
+      <p>Todas as compras são processadas pela Hotmart, plataforma líder no Brasil. Oferecemos garantia de 7 dias — se não gostar, devolvemos 100% do valor.</p>
+    </div>
+  </div>
+
+  <!-- Linha divisória -->
+  <div class="sobre-divider"></div>
+
+  <!-- Stats -->
+  <div class="sobre-stats">
+    <div class="stat-item">
+      <span class="stat-num">+200</span>
+      <span class="stat-label">Templates disponíveis</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <span class="stat-num">5★</span>
+      <span class="stat-label">Avaliação média</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <span class="stat-num">7 dias</span>
+      <span class="stat-label">De garantia</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <span class="stat-num">R$19,90</span>
+      <span class="stat-label">Preço inicial</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <a class="sobre-cta" href="https://wa.me/5514998435744" target="_blank">💬 Fale conosco pelo WhatsApp</a>
+  <p class="sobre-handle">@templify.oficial · (14) 99843-5744</p>
+
+</section>
 
 <footer>
   <p>© 2025 <span>Templify</span> · Todos os direitos reservados · @templify.oficial</p>
